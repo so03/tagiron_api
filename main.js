@@ -130,9 +130,16 @@ app.post('/init', (req, res) => {
     res.send(players);
 })
 
-// app.get('/game', (req, res) => {
+app.get('/game', (req, res) => {
+    const player = getPlayer(req.uuid);
+    if (!player) {
+        console.log("A player were not found. uuid: ", req.uuid);
+        res.status(404).send();
+        return;
+    }
 
-// })
+    res.send(player);
+})
 
 function getPlayer(uuid) {
     return players.find(p => p.uuid === uuid);
