@@ -5,8 +5,13 @@ POST /players
 curl -X POST localhost:3000/players -d '{ "name": "sasaki" }' -H 'Content-Type: application/json' --verbose
 ```
 
-POST /start
+POST /init
 ```
+curl -X POST localhost:3000/players -d '{ "name": "sasaki" }' -H 'Content-Type: application/json' --verbose &&
+curl -X POST localhost:3000/players -d '{ "name": "sawada" }' -H 'Content-Type: application/json' --verbose &&
+curl -X POST localhost:3000/players -d '{ "name": "sakai" }' -H 'Content-Type: application/json' --verbose &&
+curl -X POST localhost:3000/players -d '{ "name": "saeki" }' -H 'Content-Type: application/json' --verbose &&
+curl -X POST localhost:3000/init -H 'Content-Type: application/json' --verbose
 ```
 
 GET /game
@@ -15,7 +20,7 @@ curl localhost:3000/game -H 'Content-Type: application/json' -H 'Authorization: 
 ```
 
 
-POST /players/1/declare
+POST /declare
 
 
 

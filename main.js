@@ -5,17 +5,27 @@ const app = express();
 app.use(express.json());
 
 app.use((req, res, next) => {
-    const uuid = req.headers.authorization.replace(/^uuid /, '');
-    console.log(uuid);
-    req.uuid = uuid;
+    const token = req.headers.authorization
+    if (token) {
+        const uuid = replace(/^uuid /, '');
+        console.log(uuid);
+        req.uuid = uuid;
+    }
     next();
+})
+
+app.use(function (err, req, res, next) {
+    console.error(err.stack)
+    res.status(500).send('Something broke!')
 })
 
 const { v4 } = require('uuid');
 
 
 let players = [];
-
+let cards = [];
+let answerCards = [];
+let questions = [];
 
 app.get('/hello', (req, res) => {
     res.send("hello, world\n");
@@ -50,8 +60,24 @@ app.post('/players', (req, res) => {
     });
 })
 
-app.post('/start', (req, res) => {
-    
+app.post('/init', (req, res) => {
+   if (players.length < 4) {
+       res.status(400).send('The members count are not enough.')
+       return;
+   }
+
+   let cards = [...Array(20)].map((_, i) => {
+       const number = i % 10;
+       if (number === 5) {
+           return { number, color: 'yellow' }
+       }
+        if (number < 10) {
+            return { number, color: 'red' } 
+        }
+        return { number, color: 'blue' }
+   });
+
+   res.send(cards);
 })
 
 // app.get('/game', (req, res) => {
