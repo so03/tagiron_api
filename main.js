@@ -46,6 +46,7 @@ const QUESTION_TEXTS = [
 let players = [];
 let answerCards = [];
 let questions = [];
+let turn = 0;
 
 app.get('/hello', (req, res) => {
     res.send("hello, world\n");
@@ -72,7 +73,8 @@ app.post('/players', (req, res) => {
     players.push({
         name,
         uuid,
-        cards: null
+        cards: null,
+        retired: false
     });
     console.log("current players", players);
 
@@ -86,6 +88,14 @@ app.post('/init', (req, res) => {
         res.status(400).send('The members count are not enough.')
         return;
     }
+
+    turn = 0;
+
+    players = players.map(player => {
+        player.retired = false;
+        return player;
+    })
+    players = shuffle(players);
 
     let cards = [...Array(20)].map((_, i) => {
         const number = i % 10;
@@ -117,7 +127,7 @@ app.post('/init', (req, res) => {
         }
     });
 
-    res.send(questions);
+    res.send(players);
 })
 
 // app.get('/game', (req, res) => {
