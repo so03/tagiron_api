@@ -4,6 +4,12 @@ const app = express();
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+    const uuid = req.headers.authorization.replace(/^uuid /, '');
+    console.log(uuid);
+    req.uuid = uuid;
+    next();
+})
 
 const { v4 } = require('uuid');
 
@@ -14,6 +20,14 @@ let players = [];
 app.get('/hello', (req, res) => {
     res.send("hello, world\n");
 });
+
+app.get('/valid', (req, res) => {
+    if (req.uuid === 'test-uuid') {
+        res.send('ok');
+    } else {
+        res.status(400).send('ng');
+    }
+})
 
 app.post('/players', (req, res) => {
     const { name } = req.body;
@@ -36,4 +50,15 @@ app.post('/players', (req, res) => {
     });
 })
 
+app.post('/start', (req, res) => {
+    
+})
+
+// app.get('/game', (req, res) => {
+
+// })
+
+function getPlayer(uuid) {
+    return players.find(p => p.uuid === uuid);
+}
 app.listen(3000);
