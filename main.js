@@ -23,7 +23,6 @@ const { v4 } = require('uuid');
 
 
 let players = [];
-let cards = [];
 let answerCards = [];
 let questions = [];
 
@@ -51,7 +50,8 @@ app.post('/players', (req, res) => {
 
     players.push({
         name,
-        uuid
+        uuid,
+        cards: null
     });
     console.log("current players", players);
 
@@ -61,23 +61,34 @@ app.post('/players', (req, res) => {
 })
 
 app.post('/init', (req, res) => {
-   if (players.length < 4) {
-       res.status(400).send('The members count are not enough.')
-       return;
-   }
+    if (players.length < 4) {
+        res.status(400).send('The members count are not enough.')
+        return;
+    }
 
-   let cards = [...Array(20)].map((_, i) => {
-       const number = i % 10;
-       if (number === 5) {
-           return { number, color: 'yellow' }
-       }
+    let cards = [...Array(20)].map((_, i) => {
+        const number = i % 10;
+        if (number === 5) {
+            return { number, color: 'yellow' }
+        }
         if (number < 10) {
-            return { number, color: 'red' } 
+            return { number, color: 'red' }
         }
         return { number, color: 'blue' }
-   });
+    });
+    cards = shuffle(cards);
 
-   res.send(cards);
+    for (let i = 0; i < players.length; i++) {
+        players[i].cards = [];
+        for (let j = 0; j < 4; j++) {
+            // console.log("**Debug**", players[i])
+            players[i].cards.push(cards.pop());
+        }
+    }
+    console.log("All cards were passed out", players.map(p => JSON.stringify(p)));
+    answerCards = cards;
+
+    res.send(answerCards);
 })
 
 // app.get('/game', (req, res) => {
@@ -87,4 +98,23 @@ app.post('/init', (req, res) => {
 function getPlayer(uuid) {
     return players.find(p => p.uuid === uuid);
 }
+
+function shuffle(array) {
+    let currentIndex = array.length, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+}
+
 app.listen(3000);
