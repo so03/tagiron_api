@@ -5,6 +5,10 @@ POST /players
 curl -X POST localhost:3000/players -d '{ "name": "sasaki" }' -H 'Content-Type: application/json' --verbose
 ```
 
+POST /games/start
+```
+```
+
 GET /players/1/games
 
 POST /players/1/declare

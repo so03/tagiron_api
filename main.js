@@ -4,7 +4,12 @@ const app = express();
 
 app.use(express.json());
 
+
+const { v4 } = require('uuid');
+
+
 let players = [];
+
 
 app.get('/hello', (req, res) => {
     res.send("hello, world\n");
@@ -17,10 +22,18 @@ app.post('/players', (req, res) => {
         res.status(409).send();
         return;
     }
-    players.push(req.body);
+
+    const uuid = v4();
+
+    players.push({
+        name,
+        uuid
+    });
     console.log("current players", players);
 
-    res.status(204).send();
+    res.send({
+        uuid
+    });
 })
 
 app.listen(3000);
