@@ -123,7 +123,7 @@ app.post('/init', (req, res) => {
         return {
             id: i + 1,
             text,
-            opens: i < 5
+            isOpen: i < 5
         }
     });
 
@@ -131,14 +131,28 @@ app.post('/init', (req, res) => {
 })
 
 app.get('/game', (req, res) => {
-    const player = getPlayer(req.uuid);
-    if (!player) {
+    const me = getPlayer(req.uuid);
+    if (!me) {
         console.log("A player were not found. uuid: ", req.uuid);
         res.status(404).send();
         return;
     }
 
-    res.send(player);
+    const opens = questions.filter(q => q.isOpen);
+
+    const playerList = players.map((p, i) => {
+        return {
+            name: p.name,
+            retired: p.retired,
+            isTurn: i === turn
+        }
+    });
+
+    res.send({
+        me,
+        opens,
+        playerList 
+    });
 })
 
 function getPlayer(uuid) {
