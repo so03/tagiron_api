@@ -36,10 +36,20 @@ curl localhost:3000/game -H 'Content-Type: application/json' -H "Authorization: 
 
 
 POST /declare
+```
+uuid=$(curl -sb -X POST localhost:3000/players -d '{ "name": "sasaki" }' -H 'Content-Type: application/json' --verbose | jq '.uuid' | sed 's/"//g' | awk '{print $1}') &&
+curl -X POST localhost:3000/players -d '{ "name": "sawada" }' -H 'Content-Type: application/json' --verbose &&
+curl -X POST localhost:3000/players -d '{ "name": "sakai" }' -H 'Content-Type: application/json' --verbose &&
+curl -X POST localhost:3000/players -d '{ "name": "saeki" }' -H 'Content-Type: application/json' --verbose &&
+curl -X POST localhost:3000/init -H 'Content-Type: application/json' --verbose
+curl -X POST localhost:3000/declare -d \
+'{ "cards": [{ "number": 1, "color": "red" }, { "number": 2, "color": "red" }, { "number": 3, "color": "red" }, { "number": 4, "color": "red" }]}' \
+-H 'Content-Type: application/json' -H "Authorization: uuid $uuid" --verbose
+```
 
-
-
-GET /hello
+GET /result
+```
+```
 
 GET /valid
 valid example

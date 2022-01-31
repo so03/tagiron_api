@@ -48,10 +48,6 @@ let answerCards = [];
 let questions = [];
 let turn = 0;
 
-app.get('/hello', (req, res) => {
-    res.send("hello, world\n");
-});
-
 app.get('/valid', (req, res) => {
     if (req.uuid === 'test-uuid') {
         res.send('ok');
@@ -151,12 +147,34 @@ app.get('/game', (req, res) => {
     res.send({
         me,
         opens,
-        playerList 
+        playerList
     });
+})
+
+app.post('/declare', (req, res) => {
+    const cur = getPlayer(req.uuid);
+    if (!cur) {
+        console.log("Uuid is invalid");
+        res.status(400).send()
+        return;
+    }
+
+    const reqCards = req.body;
+
+    if (isSameCards(answerCards, reqCards)) {
+        res.status(200).send("success");
+    } else {
+        res.status(200).send("fail");
+    }
 })
 
 function getPlayer(uuid) {
     return players.find(p => p.uuid === uuid);
+}
+
+function isSameCards(a, b) {
+    // TODO
+    return true;
 }
 
 function shuffle(array) {
