@@ -48,6 +48,8 @@ let answerCards = [];
 let questions = [];
 let turn = 0;
 
+const isSameCards = require('./src/logics/isSameCards');
+
 app.get('/valid', (req, res) => {
     if (req.uuid === 'test-uuid') {
         res.send('ok');
@@ -159,8 +161,10 @@ app.post('/declare', (req, res) => {
         return;
     }
 
-    const reqCards = req.body;
+    const reqCards = req.body.cards;
 
+    console.log("**Debug**", answerCards);
+    console.log("**Debug**", reqCards);
     if (isSameCards(answerCards, reqCards)) {
         res.status(200).send("success");
     } else {
@@ -172,10 +176,7 @@ function getPlayer(uuid) {
     return players.find(p => p.uuid === uuid);
 }
 
-function isSameCards(a, b) {
-    // TODO
-    return true;
-}
+exports.isSameCards = isSameCards;
 
 function shuffle(array) {
     let currentIndex = array.length, randomIndex;

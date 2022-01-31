@@ -1,12 +1,14 @@
 {
   "scripts": {
-    "serve": "nodemon main.js"
+    "serve": "nodemon main.js",
+    "test": "jest"
   },
   "dependencies": {
     "express": "^4.17.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "jest": "^27.4.7",
     "nodemon": "^2.0.15"
   }
 }
