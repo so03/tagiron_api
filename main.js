@@ -7,7 +7,7 @@ app.use(express.json());
 app.use((req, res, next) => {
     const token = req.headers.authorization
     if (token) {
-        const uuid = replace(/^uuid /, '');
+        const uuid = token.replace(/^uuid /, '');
         console.log(uuid);
         req.uuid = uuid;
     }
