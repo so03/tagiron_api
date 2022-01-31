@@ -47,8 +47,11 @@ let players = [];
 let answerCards = [];
 let questions = [];
 let turn = 0;
+let winner = null;
 
-const isSameCards = require('./src/logics/isSameCards');
+// TODO
+// const isSameCards = require('./src/logics/isSameCards');
+const isSameCards = () => true;
 
 app.get('/valid', (req, res) => {
     if (req.uuid === 'test-uuid') {
@@ -166,17 +169,36 @@ app.post('/declare', (req, res) => {
     console.log("**Debug**", answerCards);
     console.log("**Debug**", reqCards);
     if (isSameCards(answerCards, reqCards)) {
+        winner = cur;
         res.status(200).send("success");
     } else {
         res.status(200).send("fail");
     }
 })
 
+app.get('/result', (req, res) => {
+    if (!winner) {
+        res.status(400).send("This game does not set yet.")
+        return;
+    }
+
+    const playerCards = players.map(p => {
+        return {
+            name: p.name,
+            cards: p.cards
+        }
+    })
+    
+    res.send({
+        winnerName: winner.name,
+        playerCards,
+        answerCards
+    });
+})
+
 function getPlayer(uuid) {
     return players.find(p => p.uuid === uuid);
 }
-
-exports.isSameCards = isSameCards;
 
 function shuffle(array) {
     let currentIndex = array.length, randomIndex;
