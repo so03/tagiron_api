@@ -1,6 +1,10 @@
 const express = require('express');
 
 const app = express();
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require('socket.io');
+const io = new Server(server);
 
 app.use(express.json());
 
@@ -49,9 +53,22 @@ let questions = [];
 let turn = 0;
 let winner = null;
 
-// TODO
+let listeners = []
+
+// TODO: uncomment
 // const isSameCards = require('./src/logics/isSameCards');
 const isSameCards = () => true;
+
+app.get('/io-client', (req, res) => {
+    res.sendFile(__dirname + '/src/examples/io-client.html');
+})
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.on('chat message', (msg) => {
+        console.log('message: ' + msg);
+    });
+})
 
 app.get('/valid', (req, res) => {
     if (req.uuid === 'test-uuid') {
@@ -188,7 +205,7 @@ app.get('/result', (req, res) => {
             cards: p.cards
         }
     })
-    
+
     res.send({
         winnerName: winner.name,
         playerCards,
@@ -218,4 +235,4 @@ function shuffle(array) {
     return array;
 }
 
-app.listen(3000);
+server.listen(3000);
