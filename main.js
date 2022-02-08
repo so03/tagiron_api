@@ -70,6 +70,12 @@ io.on('connection', (socket) => {
     });
 })
 
+// for debug
+app.get('/broadcast', (req, res) => {
+    io.emit('chat message', 'broadcasted');
+    res.status(204).send();
+});
+
 app.get('/valid', (req, res) => {
     if (req.uuid === 'test-uuid') {
         res.send('ok');
