@@ -53,11 +53,13 @@ let questions = [];
 let turn = 0;
 let winner = null;
 
-let listeners = []
-
 // TODO: uncomment
 // const isSameCards = require('./src/logics/isSameCards');
 const isSameCards = () => true;
+
+function broadcastUpdating() {
+    io.emit('update', 'updated');
+}
 
 // examples
 app.get('/io-client', (req, res) => {
@@ -71,9 +73,6 @@ app.get('/broadcast', (req, res) => {
 
 io.on('connection', (socket) => {
     console.log('a user connected');
-    socket.on('chat message', (msg) => {
-        console.log('message: ' + msg);
-    });
 })
 
 
@@ -102,6 +101,8 @@ app.post('/players', (req, res) => {
         retired: false
     });
     console.log("current players", players);
+
+    broadcastUpdating();
 
     res.send({
         uuid
@@ -152,7 +153,9 @@ app.post('/init', (req, res) => {
         }
     });
 
-    res.send(players);
+    broadcastUpdating();
+
+    res.status(200).send('New game initialized');
 })
 
 app.get('/game', (req, res) => {
@@ -194,8 +197,15 @@ app.post('/declare', (req, res) => {
     console.log("**Debug**", reqCards);
     if (isSameCards(answerCards, reqCards)) {
         winner = cur;
+
+        broadcastUpdating();
+
         res.status(200).send("success");
     } else {
+        cur.retired = true;
+
+        broadcastUpdating();
+
         res.status(200).send("fail");
     }
 })
