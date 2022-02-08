@@ -59,9 +59,15 @@ let listeners = []
 // const isSameCards = require('./src/logics/isSameCards');
 const isSameCards = () => true;
 
+// examples
 app.get('/io-client', (req, res) => {
     res.sendFile(__dirname + '/src/examples/io-client.html');
 })
+
+app.get('/broadcast', (req, res) => {
+    io.emit('chat message', 'broadcasted');
+    res.status(204).send();
+});
 
 io.on('connection', (socket) => {
     console.log('a user connected');
@@ -70,11 +76,6 @@ io.on('connection', (socket) => {
     });
 })
 
-// for debug
-app.get('/broadcast', (req, res) => {
-    io.emit('chat message', 'broadcasted');
-    res.status(204).send();
-});
 
 app.get('/valid', (req, res) => {
     if (req.uuid === 'test-uuid') {
