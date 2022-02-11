@@ -7,13 +7,36 @@
 2022/02/03 22:52 ~ 22:59 => 00:07
 2022/02/07 21:49 ~ 22:00 => 00:11
 2022/02/09 01:51 ~ 02:00 => 00:09
-2022/02/09 02:00 ~ 
+2022/02/09 02:00 ~ 02:11 => 00:11
+2022/02/09 21:39 ~ 21:54 => 00:15
+2022/02/11 11:24 ~ 11:46 => 00:22 ローカルでコンテナの導入
 
-total 03:14
+total 04:02
 
 TODO  
 - broadcast update event, and test it.
 - deploy
+
+Cloud Server
+```
+ssh dev-mine-ec2-user
+```
+
+Docker build
+```
+docker build . -t tagiron-api
+```
+
+Docker run
+```
+docker run --rm -p 3000:3000 tagiron-api
+```
+
+Docker exec (コンテナに入る)
+```
+docker exec -it <container id> bash
+```
+
 
 Run
 ```
