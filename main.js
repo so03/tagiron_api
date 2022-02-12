@@ -8,6 +8,9 @@ const io = new Server(server);
 
 app.use(express.json());
 
+const cors = require('cors');
+app.use(cors());
+
 app.use((req, res, next) => {
     const token = req.headers.authorization
     if (token) {
