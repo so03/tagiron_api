@@ -1,6 +1,5 @@
 TODO  
-- broadcast update event, and test it.
-- deploy
+- deploy auto re-build, run
 
 Cloud Server
 ```
