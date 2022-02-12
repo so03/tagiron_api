@@ -125,6 +125,21 @@ app.post('/players', (req, res) => {
     });
 })
 
+// for debug
+app.get('/delete-players/:name', (req, res) => {
+    const { name } = req.params;
+    console.log("players", players);
+    console.log("name", name);
+    const index = players.findIndex(p => p.name === name);
+    console.log("index", index);
+    if (index >= 0) {
+        players.splice(index, 1);
+        res.status(200).send('deleted');
+    } else {
+        res.status(400).send('failed to delete');
+    }
+})
+
 app.post('/init', (req, res) => {
     if (players.length < 4) {
         res.status(400).send('The members count are not enough.')
