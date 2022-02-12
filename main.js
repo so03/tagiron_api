@@ -76,6 +76,10 @@ io.on('connection', (socket) => {
 })
 
 
+app.get('/', (req, res) => {
+    res.status(200).send("hello\n");
+})
+
 app.get('/valid', (req, res) => {
     if (req.uuid === 'test-uuid') {
         res.send('ok');

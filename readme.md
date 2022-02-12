@@ -17,6 +17,11 @@ Docker run
 docker run --rm -p 3000:3000 tagiron-api
 ```
 
+Docker run (for production)
+```
+sudo docker run --rm -d -p 80:3000 tagiron-api
+```
+
 Docker exec (コンテナに入る)
 ```
 docker exec -it <container id> bash
