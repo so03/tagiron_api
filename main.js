@@ -4,7 +4,12 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require('socket.io');
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST']
+    }
+});
 
 app.use(express.json());
 
@@ -89,6 +94,10 @@ app.get('/valid', (req, res) => {
     } else {
         res.status(400).send('ng');
     }
+})
+
+app.get('/players', (req, res) => {
+    res.send(players)
 })
 
 app.post('/players', (req, res) => {
