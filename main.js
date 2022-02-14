@@ -57,7 +57,6 @@ app.use((req, res, next) => {
     if (token) req.uuid = token.replace(/^uuid /, '');
     next();
 })
-app.use(handleErrors)
 
 app.get('/', (req, res) => {
     res.status(200).send("hello\n");
@@ -102,5 +101,7 @@ app.post('/declare', [auth], (req, res) => {
 app.get('/result', [auth], (req, res) => {
     res.send(game.result());
 })
+
+app.use(handleErrors)
 
 server.listen(3000);

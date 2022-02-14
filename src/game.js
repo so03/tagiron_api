@@ -125,7 +125,8 @@ export class Game {
     }
 
     select(id) {
-        const i = this.questions.findIndex(q => q.id === id);
+        if (this.questions.some(q => q.selected)) abort(400, 'Already selected.')
+        const i = this.questions.findIndex(q => q.id == id);
         if (i < 0) abort(404);
         this.questions[i].selected = true;
     }
