@@ -1,10 +1,11 @@
-const { v4 } = require('uuid');
-const { abort } = require('./errors');
-const isSameCards = require('./logics/isSameCards');
-const shuffle = require('./logics/shuffle');
-const QUESTION_TEXTS = require('./constants').QUESTION_TEXTS;
+import { v4 } from 'uuid';
+import { abort } from './errors.js';
+import isSameCards from './logics/isSameCards.js';
+import shuffle from './logics/shuffle.js';
+import { QUESTION_TEXTS } from './constants.js';
 
-class Game {
+// HTTPエラーコードを、プログラムのエラーコード的に利用する（HTTPに依存しているのではなく、たまたま一致した体を装う）
+export class Game {
     constructor() {
         this.players = [];
         this.questions = [];
@@ -31,10 +32,6 @@ class Game {
         this.players.splice(index, 1);
     }
 
-    findBy(uuid) {
-        return this.players.find(p => p.uuid === uuid);
-    }
-
     init() {
         if (this.players.length < 4) abort(400, 'The members count are not enough.');
 
@@ -50,12 +47,12 @@ class Game {
             if (number === 5) {
                 return { number, color: 'yellow' }
             }
-            if (number < 10) {
+            if (i < 10) {
                 return { number, color: 'red' }
             }
             return { number, color: 'blue' }
         });
-        this.cards = shuffle(cards);
+        cards = shuffle(cards);
         for (let i = 0; i < this.players.length; i++) {
             this.players[i].cards = [];
             for (let j = 0; j < 4; j++) {
@@ -74,19 +71,15 @@ class Game {
         return true;
     }
 
-    reInit() {
-        this.init();
-    }
-
-    view(name) {
-        const me = this.players.find(p => p.name === name);
+    view(uuid) {
+        const me = this.findBy(uuid);
         if (!me) abort(404, 'View is not found');
         const opens = this.questions.filter(q => q.isOpen);
         const playerList = this.players.map((p, i) => {
             return {
                 name: p.name,
                 retired: p.retired,
-                isTurn: i === turn
+                isTurn: i === this.turn
             }
         });
         return {
@@ -135,6 +128,8 @@ class Game {
         const i = this.players.findIndex(p => p.name === name);
         return this.turn === i;
     }
-}
 
-module.exports = new Game;
+    findBy(uuid) {
+        return this.players.find(p => p.uuid === uuid);
+    }
+}

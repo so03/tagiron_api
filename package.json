@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "scripts": {
     "serve": "nodemon main.js",
     "test": "jest"

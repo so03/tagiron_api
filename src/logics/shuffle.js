@@ -1,4 +1,4 @@
-function shuffle(array) {
+export default function shuffle(array) {
     let currentIndex = array.length, randomIndex;
     // While there remain elements to shuffle...
     while (currentIndex != 0) {
@@ -11,5 +11,3 @@ function shuffle(array) {
     }
     return array;
 }
-
-module.exports = shuffle;

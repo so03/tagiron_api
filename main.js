@@ -1,18 +1,25 @@
-let game = require('./src/game');
+import { Game } from './src/game.js';
+import express from 'express';
+import http from 'http';
+import cors from 'cors';
+import { Server } from 'socket.io';
+import { handleErrors } from './src/middleware/handleErrors.js';
 
-const express = require('express');
+let game = new Game();
+
 const app = express();
-app.use(express.json());
-app.use(require('cors')());
-app.use((req, res, next) => {
-    const token = req.headers.authorization
-    if (token) req.uuid = token.replace(/^uuid /, '');
-    next();
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST']
+    }
+});
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
 })
-app.use(function (err, req, res, next) {
-    console.error(err.stack)
-    res.status(500).send('Something broke!')
-})
+
 function auth(req, res, next) {
     const player = game.findBy(req.uuid);
     if (!player) {
@@ -30,20 +37,18 @@ function isTurn(req, res, next) {
     next();
 }
 
-const server = require('http').createServer(app);
-const { Server } = require('socket.io');
-const io = new Server(server, {
-    cors: {
-        origin: '*',
-        methods: ['GET', 'POST']
-    }
-});
-io.on('connection', (socket) => {
-    console.log('a user connected');
-})
 function broadcastUpdating() {
     io.emit('update', 'updated');
 }
+
+app.use(express.json());
+app.use(cors());
+app.use((req, res, next) => {
+    const token = req.headers.authorization
+    if (token) req.uuid = token.replace(/^uuid /, '');
+    next();
+})
+app.use(handleErrors)
 
 app.get('/', (req, res) => {
     res.status(200).send("hello\n");
@@ -68,8 +73,8 @@ app.post('/init', (req, res) => {
     broadcastUpdating();
     res.status(200).send('New game initialized');
 })
-app.get('/game/:name', [auth], (req, res) => {
-    res.send(game.view(req.params.name));
+app.get('/game/:uuid', [auth], (req, res) => {
+    res.send(game.view(req.params.uuid));
 })
 app.post('/questions/:id/select', [auth, isTurn], (req, res) => {
     game.select(req.params.id);

@@ -1,4 +1,4 @@
-exports.abort = function (status, message = '') {
+export function abort(status, message = '') {
     switch (status) {
         case 400:
             throw new BadRequest(message)
@@ -15,30 +15,30 @@ exports.abort = function (status, message = '') {
     }
 }
 
-class BadRequest extends Error {
+export class BadRequest extends Error {
     constructor(message) {
         super(message)
         this.name = 'BadRequest'
     }
 }
 
-class NotFound extends Error {
+export class NotFound extends Error {
     constructor(message) {
         super(message)
-        this.name = 'NotFoundError'
+        this.name = 'NotFound'
     }
 }
 
-class Conflict extends Error {
+export class Conflict extends Error {
     constructor(message) {
         super(message)
-        this.name = 'ConflictError'
+        this.name = 'Conflict'
     }
 }
 
-class InternalServerError extends Error {
+export class InternalServerError extends Error {
     constructor(message) {
         super(message)
-        this.name = 'InternalServerError'
+        this.name = 'InternalServer'
     }
 }
