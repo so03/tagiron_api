@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "serve": "nodemon main.js",
+    "serve": "nodemon -e js main.js",
     "test": "jest"
   },
   "dependencies": {

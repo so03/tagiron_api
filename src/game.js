@@ -14,6 +14,27 @@ export class Game {
         this.winner = null;
     }
 
+    toJson() {
+        return JSON.stringify({
+            players: this.players,
+            questions: this.questions,
+            answerCards: this.answerCards,
+            turn: this.turn,
+            winner: this.winner
+        })
+    }
+
+    static fromJson(json) {
+        const obj = JSON.parse(json);
+        let game = new Game();
+        game.players = obj.players 
+        game.questions = obj.questions
+        game.answerCards = obj.answerCards
+        game.turn = obj.turn
+        game.winner = obj.winner
+        return game;
+    }
+
     addPlayer(name) {
         if (this.players.some(p => p.name === name)) abort(409);
         const uuid = v4();

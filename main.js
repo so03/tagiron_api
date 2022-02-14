@@ -4,8 +4,17 @@ import http from 'http';
 import cors from 'cors';
 import { Server } from 'socket.io';
 import { handleErrors } from './src/middleware/handleErrors.js';
+import { saveToFile } from './src/persistence.js';
+import fs from 'fs'
 
-let game = new Game();
+let game = null;
+
+if (fs.existsSync('./game.json')) {
+    const json = fs.readFileSync('./game.json');
+    game = Game.fromJson(json);
+} else {
+    game = new Game();
+}
 
 const app = express();
 const server = http.createServer(app);
@@ -59,6 +68,7 @@ app.get('/players', (req, res) => {
 app.post('/players', (req, res) => {
     const uuid = game.addPlayer(req.body.name);
     broadcastUpdating();
+    saveToFile(game);
     res.send({
         uuid
     });
@@ -71,6 +81,7 @@ app.get('/delete-players/:name', (req, res) => {
 app.post('/init', (req, res) => {
     game.init();
     broadcastUpdating();
+    saveToFile(game);
     res.status(200).send('New game initialized');
 })
 app.get('/game/:uuid', [auth], (req, res) => {
@@ -79,11 +90,13 @@ app.get('/game/:uuid', [auth], (req, res) => {
 app.post('/questions/:id/select', [auth, isTurn], (req, res) => {
     game.select(req.params.id);
     broadcastUpdating();
+    saveToFile(game);
     res.status(204).send();
 })
 app.post('/declare', [auth], (req, res) => {
     const msg = game.declare(req.body.cards) ? 'success' : 'fail';
     broadcastUpdating();
+    saveToFile(game);
     res.status(200).send(msg);
 })
 app.get('/result', [auth], (req, res) => {
