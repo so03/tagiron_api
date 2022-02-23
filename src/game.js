@@ -3,15 +3,21 @@ import { abort } from './errors.js';
 import isSameCards from './logics/isSameCards.js';
 import shuffle from './logics/shuffle.js';
 import { QUESTION_TEXTS } from './constants.js';
+import fs from 'fs'
 
 // HTTPエラーコードを、プログラムのエラーコード的に利用する（HTTPに依存しているのではなく、たまたま一致した体を装う）
 export class Game {
-    constructor() {
+    constructor(gameRepository) {
         this.players = [];
         this.questions = [];
         this.answerCards = [];
         this.turn = null;
         this.winner = null;
+        this.repository = gameRepository
+    }
+
+    save() {
+        this.repository.persist(this)
     }
 
     toJson() {
@@ -24,14 +30,16 @@ export class Game {
         })
     }
 
-    static fromJson(json) {
+    static fromJson(json, gameRepository) {
         const obj = JSON.parse(json);
         let game = new Game();
-        game.players = obj.players 
+        game.players = obj.players
         game.questions = obj.questions
         game.answerCards = obj.answerCards
         game.turn = obj.turn
         game.winner = obj.winner
+        game.repository = gameRepository
+
         return game;
     }
 
@@ -63,16 +71,7 @@ export class Game {
             return player;
         })
         this.players = shuffle(this.players);
-        let cards = [...Array(20)].map((_, i) => {
-            const number = i % 10;
-            if (number === 5) {
-                return { number, color: 'yellow' }
-            }
-            if (i < 10) {
-                return { number, color: 'red' }
-            }
-            return { number, color: 'blue' }
-        });
+        let cards = this.allCards();
         cards = shuffle(cards);
         for (let i = 0; i < this.players.length; i++) {
             this.players[i].cards = [];
@@ -86,9 +85,12 @@ export class Game {
             return {
                 id: i + 1,
                 text,
-                isOpen: i < 5
+                isOpen: i < 5,
+                isUsed: false
             }
         });
+        fs.writeFileSync('./db/questions.json', JSON.stringify(this.questions));
+
         return true;
     }
 
@@ -103,10 +105,12 @@ export class Game {
                 isTurn: i === this.turn
             }
         });
+        const questionCount = this.questions.filter(q => !q.isUsed).length
         return {
             me,
             opens,
-            playerList
+            playerList,
+            questionCount
         };
     }
 
@@ -153,5 +157,18 @@ export class Game {
 
     findBy(uuid) {
         return this.players.find(p => p.uuid === uuid);
+    }
+
+    allCards() {
+        return [...Array(20)].map((_, i) => {
+            const number = i % 10;
+            if (number === 5) {
+                return { id: i, number, color: 'yellow' }
+            }
+            if (i < 10) {
+                return { id: i, number, color: 'red' }
+            }
+            return { id: i, number, color: 'blue' }
+        });
     }
 }
