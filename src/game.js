@@ -8,6 +8,7 @@ import fs from 'fs'
 // HTTPエラーコードを、プログラムのエラーコード的に利用する（HTTPに依存しているのではなく、たまたま一致した体を装う）
 export class Game {
     constructor(gameRepository) {
+        this.isStarted = false;
         this.players = [];
         this.questions = [];
         this.answerCards = [];
@@ -90,6 +91,8 @@ export class Game {
                 isUsed: false
             }
         });
+
+        this.isStarted = true;
 
         return true;
     }

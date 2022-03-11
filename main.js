@@ -36,16 +36,6 @@ io.on("connection", (socket) => {
     console.log("a user connected");
 });
 
-function auth(req, res, next) {
-    const player = game.findBy(req.uuid);
-    if (!player) {
-        res.status(401).send("Unauthorized.");
-        return;
-    }
-    req.player = player;
-    next();
-}
-
 function isTurn(req, res, next) {
     if (!game.isTurned(req.player.name)) {
         res.status(401).send("Not your turn.");
@@ -60,12 +50,6 @@ function broadcast() {
 
 app.use(express.json());
 app.use(cors());
-app.use((req, res, next) => {
-    const token = req.headers.authorization;
-    if (token) req.uuid = token.replace(/^uuid /, "");
-    next();
-});
-
 
 // API エンドポイント
 
@@ -90,6 +74,11 @@ api.post("/players", (req, res) => {
     });
 });
 
+// ゲーム開始済？
+api.get("/is-started", (req, res) => {
+    res.status(200).send({ isStarted: game.isStarted })
+})
+
 // 新しくゲーム開始
 api.post("/game", (req, res) => {
     game.init();
@@ -104,12 +93,12 @@ api.get("/cards", (req, res) => {
 });
 
 // ゲームビュー
-api.get("/game-view", [auth], (req, res) => {
-    res.send(game.view(req.params.uuid));
+api.get("/game-view", (req, res) => {
+    res.send(game.view(req.query.uuid));
 });
 
 // 質問選択
-api.patch("/questions/:id", [auth, isTurn], (req, res) => {
+api.patch("/questions/:id", [isTurn], (req, res) => {
     game.select(req.params.id)
     game.save();
     broadcast();
@@ -117,7 +106,7 @@ api.patch("/questions/:id", [auth, isTurn], (req, res) => {
 });
 
 // 宣言
-api.post("/declare", [auth], (req, res) => {
+api.post("/declare", (req, res) => {
     const msg = game.declare(req.body.cards) ? "success" : "fail";
     game.save();
     broadcast();
@@ -125,7 +114,7 @@ api.post("/declare", [auth], (req, res) => {
 });
 
 // 結果
-api.get("/result", [auth], (req, res) => {
+api.get("/result", (req, res) => {
     res.send(game.result());
 });
 
