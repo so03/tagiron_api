@@ -1,1 +1,218 @@
-{"players":[{"name":"test1","uuid":"5a239599-0aa5-4b2c-b84e-cb94df960dbd","cards":[{"number":4,"color":"blue"},{"number":0,"color":"red"},{"number":1,"color":"red"},{"number":9,"color":"blue"}],"retired":false},{"name":"test123","uuid":"d3a93766-4e4d-4093-88a0-1b6d3408ab11","cards":[{"number":8,"color":"red"},{"number":7,"color":"blue"},{"number":0,"color":"blue"},{"number":2,"color":"blue"}],"retired":false},{"name":"4test123","uuid":"1445d9b7-15ec-4468-8903-382d3b36d057","cards":[{"number":3,"color":"red"},{"number":5,"color":"yellow"},{"number":6,"color":"red"},{"number":3,"color":"blue"}],"retired":false},{"name":"test12","uuid":"bcc93b2e-e4ac-4894-8bda-d2a2b145f123","cards":[{"number":8,"color":"blue"},{"number":2,"color":"red"},{"number":9,"color":"red"},{"number":4,"color":"red"}],"retired":false},{"name":"test","uuid":"2199948b-330e-4be3-ba9d-32839eb48530","cards":null,"retired":false},{"name":"test2","uuid":"21480ece-d7b3-4d80-ac71-1ec5a762e92b","cards":null,"retired":false}],"questions":[{"id":1,"text":"奇数は何枚ある？","isOpen":true,"selected":false},{"id":2,"text":"赤の数の合計は？","isOpen":true,"selected":false},{"id":3,"text":"6または7はどこ？（どちらかひとつ選ぶ）","isOpen":true,"selected":false},{"id":4,"text":"同じ数字タイルのペアは何組ある？","isOpen":true,"selected":false},{"id":5,"text":"数が連続している数字タイルはどこ？","isOpen":true,"selected":false},{"id":6,"text":"青の数字タイルは何枚ある？","isOpen":false},{"id":7,"text":"1または2はどこ？（どちらかひとつ選ぶ）","isOpen":false},{"id":8,"text":"[共有情報カード]数字タイルの最大の数から、最小の数を引いた数は？","isOpen":false},{"id":9,"text":"0はどこ？","isOpen":false},{"id":10,"text":"8または9はどこ？（どちらか一つ選ぶ）","isOpen":false},{"id":11,"text":"3または4はどこ？（どちらかひとつ選ぶ）","isOpen":false},{"id":12,"text":"5はどこ？","isOpen":false},{"id":13,"text":"青の数の合計は？","isOpen":false},{"id":14,"text":"大きい方から3枚の数の合計は？","isOpen":false},{"id":15,"text":"小さい方から3枚の数の合計は？","isOpen":false},{"id":16,"text":"同じ色が隣り合っている数字タイルはどこ？","isOpen":false},{"id":17,"text":"赤の数字タイルは何枚ある？","isOpen":false},{"id":18,"text":"偶数は何枚ある？（0も含む）","isOpen":false},{"id":19,"text":"[共有情報カード]数字タイル全ての数の合計は？","isOpen":false}],"answerCards":[{"number":6,"color":"blue"},{"number":7,"color":"red"},{"number":1,"color":"blue"},{"number":5,"color":"yellow"}],"turn":0,"winner":null}
+{
+    "players": [
+        {
+            "name": "test1",
+            "uuid": "5a239599-0aa5-4b2c-b84e-cb94df960dbd",
+            "cards": [
+                {
+                    "number": 4,
+                    "color": "blue"
+                },
+                {
+                    "number": 0,
+                    "color": "red"
+                },
+                {
+                    "number": 1,
+                    "color": "red"
+                },
+                {
+                    "number": 9,
+                    "color": "blue"
+                }
+            ],
+            "retired": false
+        },
+        {
+            "name": "test123",
+            "uuid": "d3a93766-4e4d-4093-88a0-1b6d3408ab11",
+            "cards": [
+                {
+                    "number": 8,
+                    "color": "red"
+                },
+                {
+                    "number": 7,
+                    "color": "blue"
+                },
+                {
+                    "number": 0,
+                    "color": "blue"
+                },
+                {
+                    "number": 2,
+                    "color": "blue"
+                }
+            ],
+            "retired": false
+        },
+        {
+            "name": "佐々木",
+            "uuid": "1445d9b7-15ec-4468-8903-382d3b36d057",
+            "cards": [
+                {
+                    "number": 3,
+                    "color": "red"
+                },
+                {
+                    "number": 5,
+                    "color": "yellow"
+                },
+                {
+                    "number": 6,
+                    "color": "red"
+                },
+                {
+                    "number": 3,
+                    "color": "blue"
+                }
+            ],
+            "retired": false
+        },
+        {
+            "name": "test12",
+            "uuid": "bcc93b2e-e4ac-4894-8bda-d2a2b145f123",
+            "cards": [
+                {
+                    "number": 8,
+                    "color": "blue"
+                },
+                {
+                    "number": 2,
+                    "color": "red"
+                },
+                {
+                    "number": 9,
+                    "color": "red"
+                },
+                {
+                    "number": 4,
+                    "color": "red"
+                }
+            ],
+            "retired": false
+        }
+    ],
+    "questions": [
+        {
+            "id": 1,
+            "text": "奇数は何枚ある？",
+            "isOpen": true,
+            "selected": false
+        },
+        {
+            "id": 2,
+            "text": "赤の数の合計は？",
+            "isOpen": true,
+            "selected": false
+        },
+        {
+            "id": 3,
+            "text": "6または7はどこ？（どちらかひとつ選ぶ）",
+            "isOpen": true,
+            "selected": false
+        },
+        {
+            "id": 4,
+            "text": "同じ数字タイルのペアは何組ある？",
+            "isOpen": true,
+            "selected": false
+        },
+        {
+            "id": 5,
+            "text": "数が連続している数字タイルはどこ？",
+            "isOpen": true,
+            "selected": false
+        },
+        {
+            "id": 6,
+            "text": "青の数字タイルは何枚ある？",
+            "isOpen": false
+        },
+        {
+            "id": 7,
+            "text": "1または2はどこ？（どちらかひとつ選ぶ）",
+            "isOpen": false
+        },
+        {
+            "id": 8,
+            "text": "[共有情報カード]数字タイルの最大の数から、最小の数を引いた数は？",
+            "isOpen": false
+        },
+        {
+            "id": 9,
+            "text": "0はどこ？",
+            "isOpen": false
+        },
+        {
+            "id": 10,
+            "text": "8または9はどこ？（どちらか一つ選ぶ）",
+            "isOpen": false
+        },
+        {
+            "id": 11,
+            "text": "3または4はどこ？（どちらかひとつ選ぶ）",
+            "isOpen": false
+        },
+        {
+            "id": 12,
+            "text": "5はどこ？",
+            "isOpen": false
+        },
+        {
+            "id": 13,
+            "text": "青の数の合計は？",
+            "isOpen": false
+        },
+        {
+            "id": 14,
+            "text": "大きい方から3枚の数の合計は？",
+            "isOpen": false
+        },
+        {
+            "id": 15,
+            "text": "小さい方から3枚の数の合計は？",
+            "isOpen": false
+        },
+        {
+            "id": 16,
+            "text": "同じ色が隣り合っている数字タイルはどこ？",
+            "isOpen": false
+        },
+        {
+            "id": 17,
+            "text": "赤の数字タイルは何枚ある？",
+            "isOpen": false
+        },
+        {
+            "id": 18,
+            "text": "偶数は何枚ある？（0も含む）",
+            "isOpen": false
+        },
+        {
+            "id": 19,
+            "text": "[共有情報カード]数字タイル全ての数の合計は？",
+            "isOpen": false
+        }
+    ],
+    "answerCards": [
+        {
+            "number": 6,
+            "color": "blue"
+        },
+        {
+            "number": 7,
+            "color": "red"
+        },
+        {
+            "number": 1,
+            "color": "blue"
+        },
+        {
+            "number": 5,
+            "color": "yellow"
+        }
+    ],
+    "turn": 0,
+    "winner": null
+}

@@ -44,6 +44,7 @@ export class Game {
     }
 
     addPlayer(name) {
+        if (this.players.length === 4) abort(400, 'Already reached Max player count');
         if (this.players.some(p => p.name === name)) abort(409);
         const uuid = v4();
         this.players.push({

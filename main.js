@@ -69,17 +69,19 @@ app.use((req, res, next) => {
 
 // API エンドポイント
 
-app.get("/", (req, res) => {
+const api = express.Router();
+
+api.get("/", (req, res) => {
     res.status(200).send("hello\n");
 });
 
 // 参加者一覧
-app.get("/api/players", (req, res) => {
+api.get("/players", (req, res) => {
     res.send(game.players.map(p => ({ name: p.name })))
 });
 
 // 参加
-app.post("/api/players", (req, res) => {
+api.post("/players", (req, res) => {
     const uuid = game.addPlayer(req.body.name)
     game.save();
     broadcast();
@@ -89,7 +91,7 @@ app.post("/api/players", (req, res) => {
 });
 
 // 新しくゲーム開始
-app.post("/api/game", (req, res) => {
+api.post("/game", (req, res) => {
     game.init();
     game.save();
     broadcast();
@@ -97,17 +99,17 @@ app.post("/api/game", (req, res) => {
 });
 
 // 全カード
-app.get("/api/cards", (req, res) => {
+api.get("/cards", (req, res) => {
     res.send(game.allCards());
 });
 
 // ゲームビュー
-app.get("/api/game-view", [auth], (req, res) => {
+api.get("/game-view", [auth], (req, res) => {
     res.send(game.view(req.params.uuid));
 });
 
 // 質問選択
-app.patch("/api/questions/:id", [auth, isTurn], (req, res) => {
+api.patch("/questions/:id", [auth, isTurn], (req, res) => {
     game.select(req.params.id)
     game.save();
     broadcast();
@@ -115,7 +117,7 @@ app.patch("/api/questions/:id", [auth, isTurn], (req, res) => {
 });
 
 // 宣言
-app.post("/api/declare", [auth], (req, res) => {
+api.post("/declare", [auth], (req, res) => {
     const msg = game.declare(req.body.cards) ? "success" : "fail";
     game.save();
     broadcast();
@@ -123,9 +125,11 @@ app.post("/api/declare", [auth], (req, res) => {
 });
 
 // 結果
-app.get("/api/result", [auth], (req, res) => {
+api.get("/result", [auth], (req, res) => {
     res.send(game.result());
 });
+
+app.use('/api', api)
 
 app.use(handleErrors);
 
