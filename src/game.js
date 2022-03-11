@@ -90,7 +90,6 @@ export class Game {
                 isUsed: false
             }
         });
-        fs.writeFileSync('./db/questions.json', JSON.stringify(this.questions));
 
         return true;
     }

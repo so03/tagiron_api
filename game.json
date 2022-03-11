@@ -1,47 +1,28 @@
 {
     "players": [
         {
-            "name": "test1",
-            "uuid": "5a239599-0aa5-4b2c-b84e-cb94df960dbd",
-            "cards": [
-                {
-                    "number": 4,
-                    "color": "blue"
-                },
-                {
-                    "number": 0,
-                    "color": "red"
-                },
-                {
-                    "number": 1,
-                    "color": "red"
-                },
-                {
-                    "number": 9,
-                    "color": "blue"
-                }
-            ],
-            "retired": false
-        },
-        {
             "name": "test123",
             "uuid": "d3a93766-4e4d-4093-88a0-1b6d3408ab11",
             "cards": [
                 {
-                    "number": 8,
+                    "id": 7,
+                    "number": 7,
                     "color": "red"
                 },
                 {
+                    "id": 6,
+                    "number": 6,
+                    "color": "red"
+                },
+                {
+                    "id": 17,
                     "number": 7,
                     "color": "blue"
                 },
                 {
-                    "number": 0,
-                    "color": "blue"
-                },
-                {
-                    "number": 2,
-                    "color": "blue"
+                    "id": 15,
+                    "number": 5,
+                    "color": "yellow"
                 }
             ],
             "retired": false
@@ -51,19 +32,23 @@
             "uuid": "1445d9b7-15ec-4468-8903-382d3b36d057",
             "cards": [
                 {
+                    "id": 3,
                     "number": 3,
                     "color": "red"
                 },
                 {
-                    "number": 5,
-                    "color": "yellow"
-                },
-                {
-                    "number": 6,
+                    "id": 2,
+                    "number": 2,
                     "color": "red"
                 },
                 {
-                    "number": 3,
+                    "id": 10,
+                    "number": 0,
+                    "color": "blue"
+                },
+                {
+                    "id": 14,
+                    "number": 4,
                     "color": "blue"
                 }
             ],
@@ -74,19 +59,50 @@
             "uuid": "bcc93b2e-e4ac-4894-8bda-d2a2b145f123",
             "cards": [
                 {
+                    "id": 11,
+                    "number": 1,
+                    "color": "blue"
+                },
+                {
+                    "id": 4,
+                    "number": 4,
+                    "color": "red"
+                },
+                {
+                    "id": 18,
                     "number": 8,
                     "color": "blue"
                 },
                 {
+                    "id": 16,
+                    "number": 6,
+                    "color": "blue"
+                }
+            ],
+            "retired": false
+        },
+        {
+            "name": "test1",
+            "uuid": "5a239599-0aa5-4b2c-b84e-cb94df960dbd",
+            "cards": [
+                {
+                    "id": 8,
+                    "number": 8,
+                    "color": "red"
+                },
+                {
+                    "id": 5,
+                    "number": 5,
+                    "color": "yellow"
+                },
+                {
+                    "id": 12,
                     "number": 2,
-                    "color": "red"
+                    "color": "blue"
                 },
                 {
-                    "number": 9,
-                    "color": "red"
-                },
-                {
-                    "number": 4,
+                    "id": 0,
+                    "number": 0,
                     "color": "red"
                 }
             ],
@@ -96,121 +112,139 @@
     "questions": [
         {
             "id": 1,
-            "text": "奇数は何枚ある？",
+            "text": "青の数字タイルは何枚ある？",
             "isOpen": true,
-            "selected": false
+            "isUsed": false
         },
         {
             "id": 2,
-            "text": "赤の数の合計は？",
+            "text": "同じ色が隣り合っている数字タイルはどこ？",
             "isOpen": true,
-            "selected": false
+            "isUsed": false
         },
         {
             "id": 3,
-            "text": "6または7はどこ？（どちらかひとつ選ぶ）",
+            "text": "偶数は何枚ある？（0も含む）",
             "isOpen": true,
-            "selected": false
+            "isUsed": false
         },
         {
             "id": 4,
-            "text": "同じ数字タイルのペアは何組ある？",
+            "text": "3または4はどこ？（どちらかひとつ選ぶ）",
             "isOpen": true,
-            "selected": false
+            "isUsed": false
         },
         {
             "id": 5,
-            "text": "数が連続している数字タイルはどこ？",
+            "text": "小さい方から3枚の数の合計は？",
             "isOpen": true,
-            "selected": false
+            "isUsed": false
         },
         {
             "id": 6,
-            "text": "青の数字タイルは何枚ある？",
-            "isOpen": false
+            "text": "6または7はどこ？（どちらかひとつ選ぶ）",
+            "isOpen": false,
+            "isUsed": false
         },
         {
             "id": 7,
-            "text": "1または2はどこ？（どちらかひとつ選ぶ）",
-            "isOpen": false
+            "text": "大きい方から3枚の数の合計は？",
+            "isOpen": false,
+            "isUsed": false
         },
         {
             "id": 8,
-            "text": "[共有情報カード]数字タイルの最大の数から、最小の数を引いた数は？",
-            "isOpen": false
+            "text": "奇数は何枚ある？",
+            "isOpen": false,
+            "isUsed": false
         },
         {
             "id": 9,
-            "text": "0はどこ？",
-            "isOpen": false
+            "text": "赤の数の合計は？",
+            "isOpen": false,
+            "isUsed": false
         },
         {
             "id": 10,
-            "text": "8または9はどこ？（どちらか一つ選ぶ）",
-            "isOpen": false
+            "text": "[共有情報カード]数字タイルの最大の数から、最小の数を引いた数は？",
+            "isOpen": false,
+            "isUsed": false
         },
         {
             "id": 11,
-            "text": "3または4はどこ？（どちらかひとつ選ぶ）",
-            "isOpen": false
+            "text": "1または2はどこ？（どちらかひとつ選ぶ）",
+            "isOpen": false,
+            "isUsed": false
         },
         {
             "id": 12,
             "text": "5はどこ？",
-            "isOpen": false
+            "isOpen": false,
+            "isUsed": false
         },
         {
             "id": 13,
-            "text": "青の数の合計は？",
-            "isOpen": false
+            "text": "0はどこ？",
+            "isOpen": false,
+            "isUsed": false
         },
         {
             "id": 14,
-            "text": "大きい方から3枚の数の合計は？",
-            "isOpen": false
+            "text": "赤の数字タイルは何枚ある？",
+            "isOpen": false,
+            "isUsed": false
         },
         {
             "id": 15,
-            "text": "小さい方から3枚の数の合計は？",
-            "isOpen": false
+            "text": "同じ数字タイルのペアは何組ある？",
+            "isOpen": false,
+            "isUsed": false
         },
         {
             "id": 16,
-            "text": "同じ色が隣り合っている数字タイルはどこ？",
-            "isOpen": false
+            "text": "青の数の合計は？",
+            "isOpen": false,
+            "isUsed": false
         },
         {
             "id": 17,
-            "text": "赤の数字タイルは何枚ある？",
-            "isOpen": false
+            "text": "数が連続している数字タイルはどこ？",
+            "isOpen": false,
+            "isUsed": false
         },
         {
             "id": 18,
-            "text": "偶数は何枚ある？（0も含む）",
-            "isOpen": false
+            "text": "8または9はどこ？（どちらか一つ選ぶ）",
+            "isOpen": false,
+            "isUsed": false
         },
         {
             "id": 19,
             "text": "[共有情報カード]数字タイル全ての数の合計は？",
-            "isOpen": false
+            "isOpen": false,
+            "isUsed": false
         }
     ],
     "answerCards": [
         {
-            "number": 6,
-            "color": "blue"
-        },
-        {
-            "number": 7,
+            "id": 1,
+            "number": 1,
             "color": "red"
         },
         {
-            "number": 1,
+            "id": 19,
+            "number": 9,
             "color": "blue"
         },
         {
-            "number": 5,
-            "color": "yellow"
+            "id": 9,
+            "number": 9,
+            "color": "red"
+        },
+        {
+            "id": 13,
+            "number": 3,
+            "color": "blue"
         }
     ],
     "turn": 0,
