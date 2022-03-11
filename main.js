@@ -8,8 +8,10 @@ import { handleErrors } from "./src/middleware/handleErrors.js";
 import fs from "fs";
 import path from 'path';
 
+// ゲームデータ初期化
 let game = null;
 
+// セーブデータの読み込み
 const gameRepository = new GameRepository(path.resolve('./game.json'));
 
 if (fs.existsSync("./game.json")) {
@@ -19,6 +21,7 @@ if (fs.existsSync("./game.json")) {
     game = new Game(gameRepository);
 }
 
+// APIサーバーの初期化
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -61,6 +64,9 @@ app.use((req, res, next) => {
     if (token) req.uuid = token.replace(/^uuid /, "");
     next();
 });
+
+
+// API エンドポイント
 
 app.get("/", (req, res) => {
     res.status(200).send("hello\n");

@@ -108,9 +108,10 @@ export class Game {
         const questionCount = this.questions.filter(q => !q.isUsed).length
         return {
             me,
+            isTurn: this.isTurned(me.name),
             opens,
             playerList,
-            questionCount
+            questionCount,
         };
     }
 
