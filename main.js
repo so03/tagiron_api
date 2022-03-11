@@ -11,9 +11,10 @@ import path from 'path';
 // ゲームデータ初期化
 let game = null;
 
-// セーブデータの読み込み
+// セーブファイルの指定
 const gameRepository = new GameRepository(path.resolve('./game.json'));
 
+// セーブデータの読み込み
 if (fs.existsSync("./game.json")) {
     const json = fs.readFileSync("./game.json");
     game = Game.fromJson(json, gameRepository);
