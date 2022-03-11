@@ -67,12 +67,12 @@ app.get("/", (req, res) => {
 });
 
 // 参加者一覧
-app.get("/players", (req, res) => {
-    res.send(game.players.map(p => { name: p.name }))
+app.get("/api/players", (req, res) => {
+    res.send(game.players.map(p => ({ name: p.name })))
 });
 
 // 参加
-app.post("/players", (req, res) => {
+app.post("/api/players", (req, res) => {
     const uuid = game.addPlayer(req.body.name)
     game.save();
     broadcast();
@@ -82,7 +82,7 @@ app.post("/players", (req, res) => {
 });
 
 // 新しくゲーム開始
-app.post("/game", (req, res) => {
+app.post("/api/game", (req, res) => {
     game.init();
     game.save();
     broadcast();
@@ -90,17 +90,17 @@ app.post("/game", (req, res) => {
 });
 
 // 全カード
-app.get("/cards", (req, res) => {
+app.get("/api/cards", (req, res) => {
     res.send(game.allCards());
 });
 
 // ゲームビュー
-app.get("/game-view", [auth], (req, res) => {
+app.get("/api/game-view", [auth], (req, res) => {
     res.send(game.view(req.params.uuid));
 });
 
 // 質問選択
-app.patch("/questions/:id", [auth, isTurn], (req, res) => {
+app.patch("/api/questions/:id", [auth, isTurn], (req, res) => {
     game.select(req.params.id)
     game.save();
     broadcast();
@@ -108,7 +108,7 @@ app.patch("/questions/:id", [auth, isTurn], (req, res) => {
 });
 
 // 宣言
-app.post("/declare", [auth], (req, res) => {
+app.post("/api/declare", [auth], (req, res) => {
     const msg = game.declare(req.body.cards) ? "success" : "fail";
     game.save();
     broadcast();
@@ -116,7 +116,7 @@ app.post("/declare", [auth], (req, res) => {
 });
 
 // 結果
-app.get("/result", [auth], (req, res) => {
+app.get("/api/result", [auth], (req, res) => {
     res.send(game.result());
 });
 
