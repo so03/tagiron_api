@@ -107,7 +107,7 @@ api.patch("/questions/:id", [isTurn], (req, res) => {
 
 // 宣言
 api.post("/declare", (req, res) => {
-    const msg = game.declare(req.body.cards) ? "success" : "fail";
+    const msg = game.declare(req.body.cards, req.query.uuid) ? "success" : "fail";
     game.save();
     broadcast();
     res.status(200).send(msg);

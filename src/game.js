@@ -139,18 +139,25 @@ export class Game {
         this.questions[i].selected = true;
     }
 
-    declare(cards, name) {
+    declare(cards, uuid) {
+        const player = this.findBy(uuid)
+        if (!player) abort(404, 'The player was not found')
+
         if (isSameCards(this.answerCards, cards)) {
-            this.winner = name;
+            this.winner = player.name;
             return true;
         } else {
-            this.retire(name);
+            this.retire(uuid);
             return false;
         }
     }
 
-    retire(name) {
-        const i = this.players.findIndex(p => p.name === name)
+    retire(uuid) {
+        const i = this.players.findIndex(p => p.uuid === uuid)
+        if (i < 0) {
+            console.error(`A player failed to retire. index: ${i}, name: ${name}`)
+            abort(500, 'Retire failed. Something went wrong')
+        }
         this.players[i].retired = true;
     }
 
