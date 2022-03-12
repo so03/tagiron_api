@@ -17,6 +17,24 @@ export class Game {
         this.repository = gameRepository
     }
 
+    allCards() {
+        let cards = [];
+        let id = 1;
+        for (let i = 0; i < 10; i++) {
+            if (i === 5) {
+                for (let j = 0; j < 2; j++) {
+                    cards.push({ id, number: i, color: 'yellow' })
+                    id += 1;
+                }
+            }
+            cards.push({ id, number: i, color: 'red' })
+            id += 1;
+            cards.push({ id, number: i, color: 'blue' })
+            id += 1;
+        }
+        return cards;
+    }
+
     save() {
         this.repository.persist(this)
     }
@@ -168,18 +186,5 @@ export class Game {
 
     findBy(uuid) {
         return this.players.find(p => p.uuid === uuid);
-    }
-
-    allCards() {
-        return [...Array(20)].map((_, i) => {
-            const number = i % 10;
-            if (number === 5) {
-                return { id: i, number, color: 'yellow' }
-            }
-            if (i < 10) {
-                return { id: i, number, color: 'red' }
-            }
-            return { id: i, number, color: 'blue' }
-        });
     }
 }
