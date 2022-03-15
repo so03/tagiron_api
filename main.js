@@ -56,12 +56,12 @@ app.use(cors());
 
 const api = express.Router();
 
-api.get("/", (req, res) => {
+api.get("/", (_req, res) => {
     res.status(200).send("hello\n");
 });
 
 // 参加者一覧
-api.get("/players", (req, res) => {
+api.get("/players", (_req, res) => {
     res.send(game.players.map(p => ({ name: p.name })))
 });
 
@@ -75,6 +75,15 @@ api.post("/players", (req, res) => {
     });
 });
 
+// 参加済?
+api.get('/is-joined/:uuid', (req, res) => {
+    const player = game.findBy(req.params.uuid)
+    if (player) {
+        res.status(200).send('yes')
+    } else {
+        res.status(200).send('no')
+    }
+})
 // ゲーム開始済？
 api.get("/is-started", (req, res) => {
     res.status(200).send({ isStarted: game.isStarted })
