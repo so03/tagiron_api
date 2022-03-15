@@ -8,18 +8,19 @@ import { handleErrors } from "./src/middleware/handleErrors.js";
 import fs from "fs";
 import path from 'path';
 
-// ゲームデータ初期化
-let game = null;
-
-// セーブファイルの指定
+// セーブ場所の指定
 const gameRepository = new GameRepository(path.resolve('./game.json'));
 
-// セーブデータの読み込み
-if (fs.existsSync("./game.json")) {
-    const json = fs.readFileSync("./game.json");
-    game = Game.fromJson(json, gameRepository);
-} else {
-    game = new Game(gameRepository);
+// ゲームデータ初期化
+let game = loadGame(gameRepository);
+
+function loadGame(gameRepository) {
+    // セーブデータの読み込み
+    if (fs.existsSync("./game.json")) {
+        const json = fs.readFileSync("./game.json");
+        return Game.fromJson(json, gameRepository);
+    }
+    return new Game(gameRepository);
 }
 
 // APIサーバーの初期化
@@ -117,6 +118,14 @@ api.post("/declare", (req, res) => {
 api.get("/result", (req, res) => {
     res.send(game.result());
 });
+
+// ゲーム終了
+api.put("/clear", (req, res) => {
+    game = new Game(gameRepository);
+    game.save();
+    broadcast();
+    res.status(203).send(null)
+})
 
 app.use('/api', api)
 

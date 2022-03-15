@@ -17,6 +17,19 @@ export class Game {
         this.repository = gameRepository
     }
 
+    addPlayer(name) {
+        if (this.players.length === 4) abort(400, 'Already reached Max player count');
+        if (this.players.some(p => p.name === name)) abort(409);
+        const uuid = v4();
+        this.players.push({
+            name,
+            uuid,
+            cards: null,
+            retired: false
+        })
+        return uuid;
+    }
+
     allCards() {
         let cards = [];
         let id = 1;
@@ -60,19 +73,6 @@ export class Game {
         game.repository = gameRepository
 
         return game;
-    }
-
-    addPlayer(name) {
-        if (this.players.length === 4) abort(400, 'Already reached Max player count');
-        if (this.players.some(p => p.name === name)) abort(409);
-        const uuid = v4();
-        this.players.push({
-            name,
-            uuid,
-            cards: null,
-            retired: false
-        })
-        return uuid;
     }
 
     removePlayer(name) {
