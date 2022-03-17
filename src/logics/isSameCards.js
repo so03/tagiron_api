@@ -1,4 +1,4 @@
-export default function isSameCards(cardsA, cardsB) {
+export function isSameCards(cardsA, cardsB) {
     if (cardsA.length !== cardsB.length) {
         console.log("The length is not same");
         return false;

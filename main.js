@@ -3,24 +3,24 @@ import http from "http";
 import cors from "cors";
 import { Server } from "socket.io";
 import { Game } from "./src/game.js";
-import { GameRepository } from "./src/gameRepository.js";
+import { FileRepository } from "./src/repositories.js";
 import { handleErrors } from "./src/middleware/handleErrors.js";
 import fs from "fs";
 import path from 'path';
 
 // セーブ場所の指定
-const gameRepository = new GameRepository(path.resolve('./game.json'));
+const repo = new FileRepository(path.resolve('./game.json'));
 
 // ゲームデータ初期化
-let game = loadGame(gameRepository);
+let game = loadGame(repo);
 
-function loadGame(gameRepository) {
+function loadGame(repo) {
     // セーブデータの読み込み
     if (fs.existsSync("./game.json")) {
         const json = fs.readFileSync("./game.json");
-        return Game.fromJson(json, gameRepository);
+        return Game.fromJson(json, repo);
     }
-    return new Game(gameRepository);
+    return new Game(repo);
 }
 
 // APIサーバーの初期化
@@ -140,7 +140,7 @@ api.get("/result", (req, res) => {
 
 // ゲーム終了
 api.put("/clear", (req, res) => {
-    game = new Game(gameRepository);
+    game = new Game(repo);
     game.save();
     broadcast();
     res.status(203).send(null)

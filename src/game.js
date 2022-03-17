@@ -1,20 +1,19 @@
 import { v4 } from 'uuid';
 import { abort } from './errors.js';
-import isSameCards from './logics/isSameCards.js';
-import shuffle from './logics/shuffle.js';
+import { shuffle } from './logics/shuffle.js';
+import { isSameCards } from './logics/isSameCards.js';
 import { QUESTION_TEXTS } from './constants.js';
-import fs from 'fs'
 
 // HTTPエラーコードを、プログラムのエラーコード的に利用する（HTTPに依存しているのではなく、たまたま一致した体を装う）
 export class Game {
-    constructor(gameRepository) {
+    constructor(repository) {
         this.isStarted = false;
         this.players = [];
         this.questions = [];
         this.answerCards = [];
         this.turn = null;
         this.winner = null;
-        this.repository = gameRepository
+        this.repository = repository
     }
 
     addPlayer(name) {
@@ -62,7 +61,7 @@ export class Game {
         })
     }
 
-    static fromJson(json, gameRepository) {
+    static fromJson(json, repository) {
         const obj = JSON.parse(json);
         let game = new Game();
         game.players = obj.players
@@ -70,7 +69,7 @@ export class Game {
         game.answerCards = obj.answerCards
         game.turn = obj.turn
         game.winner = obj.winner
-        game.repository = gameRepository
+        game.repository = repository
 
         return game;
     }
@@ -105,8 +104,8 @@ export class Game {
             return {
                 id: i + 1,
                 text,
-                isOpen: i < 5,
-                isUsed: false
+                isUsed: false,
+                isSelected: false,
             }
         });
 
@@ -123,6 +122,14 @@ export class Game {
             this.turn %= 4;
             if (!this.turnedPlayer.isRetired) break;
         }
+
+        console.log("opens", this.opens())
+
+        const i = this.opens().findIndex(q => q.isSelected)
+
+        if (i < 0) abort(500, 'Failed to next turn. A question is not selected.')
+
+        this.questions[i].isUsed = true;
     }
 
     view(uuid) {
@@ -142,12 +149,12 @@ export class Game {
             opens: this.opens(),
             playerList,
             questionCount,
-            isSelected: this.isSelected(),
+            isSelected: this.isSelectEnded(),
         };
     }
 
     opens() {
-        return this.questions.filter(q => q.isOpen);
+        return this.questions.filter(q => !q.isUsed).slice(0, 5);
     }
 
     result() {
@@ -165,14 +172,14 @@ export class Game {
     }
 
     select(id) {
-        if (this.isSelected()) abort(400, 'Already selected.')
+        if (this.isSelectEnded()) abort(400, 'Already selected.')
         const i = this.questions.findIndex(q => q.id == id);
         if (i < 0) abort(404);
-        this.questions[i].selected = true;
+        this.questions[i].isSelected = true;
     }
 
-    isSelected() {
-        return this.opens().some(q => q.selected)
+    isSelectEnded() {
+        return this.opens().some(q => q.isSelected)
     }
 
     declare(cards, uuid) {
