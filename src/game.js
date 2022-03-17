@@ -128,7 +128,6 @@ export class Game {
     view(uuid) {
         const me = this.findBy(uuid);
         if (!me) abort(404, 'View is not found');
-        const opens = this.questions.filter(q => q.isOpen);
         const playerList = this.players.map((p, i) => {
             return {
                 name: p.name,
@@ -140,11 +139,15 @@ export class Game {
         return {
             me,
             isTurn: this.isTurned(me.uuid),
-            opens,
+            opens: this.opens(),
             playerList,
             questionCount,
             isSelected: this.isSelected(),
         };
+    }
+
+    opens() {
+        return this.questions.filter(q => q.isOpen);
     }
 
     result() {
@@ -169,7 +172,7 @@ export class Game {
     }
 
     isSelected() {
-        return this.questions.some(q => q.selected)
+        return this.opens().some(q => q.selected)
     }
 
     declare(cards, uuid) {
