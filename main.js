@@ -38,7 +38,7 @@ io.on("connection", (socket) => {
 });
 
 function isTurn(req, res, next) {
-    if (!game.isTurned(req.player.name)) {
+    if (!game.isTurned(req.query.uuid)) {
         res.status(401).send("Not your turn.");
         return;
     }
@@ -84,6 +84,7 @@ api.get('/is-joined/:uuid', (req, res) => {
         res.status(200).send('no')
     }
 })
+
 // ゲーム開始済？
 api.get("/is-started", (req, res) => {
     res.status(200).send({ isStarted: game.isStarted })
@@ -108,12 +109,21 @@ api.get("/game-view", (req, res) => {
 });
 
 // 質問選択
-api.patch("/questions/:id", [isTurn], (req, res) => {
+// /questions/:id/select?uuid=hogehoge
+api.patch("/questions/:id/select", [isTurn], (req, res) => {
     game.select(req.params.id)
     game.save();
     broadcast();
     res.status(204).send();
 });
+
+// 次の順番へ
+api.post("/next-turn", [isTurn], (req, res) => {
+    game.nextTurn()
+    game.save()
+    broadcast();
+    res.status(204).send();
+})
 
 // 宣言
 api.post("/declare", (req, res) => {

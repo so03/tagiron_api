@@ -115,6 +115,16 @@ export class Game {
         return true;
     }
 
+    nextTurn() {
+        if (this.players.every(p => p.retired)) abort(500, 'All players were already retired');
+
+        while (true) {
+            this.turn += 1;
+            this.turn %= 4;
+            if (!this.turnedPlayer.isRetired) break;
+        }
+    }
+
     view(uuid) {
         const me = this.findBy(uuid);
         if (!me) abort(404, 'View is not found');
@@ -129,10 +139,11 @@ export class Game {
         const questionCount = this.questions.filter(q => !q.isUsed).length
         return {
             me,
-            isTurn: this.isTurned(me.name),
+            isTurn: this.isTurned(me.uuid),
             opens,
             playerList,
             questionCount,
+            isSelected: this.isSelected(),
         };
     }
 
@@ -151,10 +162,14 @@ export class Game {
     }
 
     select(id) {
-        if (this.questions.some(q => q.selected)) abort(400, 'Already selected.')
+        if (this.isSelected()) abort(400, 'Already selected.')
         const i = this.questions.findIndex(q => q.id == id);
         if (i < 0) abort(404);
         this.questions[i].selected = true;
+    }
+
+    isSelected() {
+        return this.questions.some(q => q.selected)
     }
 
     declare(cards, uuid) {
@@ -179,9 +194,13 @@ export class Game {
         this.players[i].retired = true;
     }
 
-    isTurned(name) {
-        const i = this.players.findIndex(p => p.name === name);
+    isTurned(uuid) {
+        const i = this.players.findIndex(p => p.uuid === uuid);
         return this.turn === i;
+    }
+
+    turnedPlayer() {
+        return this.players[this.turn]
     }
 
     findBy(uuid) {
