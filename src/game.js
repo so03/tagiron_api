@@ -38,6 +38,7 @@ export class Game {
                     cards.push({ id, number: i, color: 'yellow' })
                     id += 1;
                 }
+                continue;
             }
             cards.push({ id, number: i, color: 'red' })
             id += 1;
@@ -154,6 +155,7 @@ export class Game {
             playerList,
             questionCount,
             isSelected: this.isSelectEnded(),
+            isFinished: this.winner !== null
         };
     }
 
@@ -162,7 +164,7 @@ export class Game {
     }
 
     result() {
-        const playerCards = this.players.map(p => {
+        const allPlayerCards = this.players.map(p => {
             return {
                 name: p.name,
                 cards: p.cards
@@ -170,7 +172,7 @@ export class Game {
         })
         return {
             winner: this.winner,
-            playerCards,
+            allPlayerCards,
             answerCards: this.answerCards
         };
     }
