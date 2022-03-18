@@ -114,7 +114,7 @@ export class Game {
         return true;
     }
 
-    nextTurn() {
+    nextTurn({ questionCheck = true }) {
         if (this.players.every(p => p.retired)) abort(500, 'All players were already retired');
 
         while (true) {
@@ -125,11 +125,15 @@ export class Game {
 
         console.log("opens", this.opens())
 
-        const i = this.opens().findIndex(q => q.isSelected)
+        if (questionCheck) {
+            const i = this.opens().findIndex(q => q.isSelected)
 
-        if (i < 0) abort(500, 'Failed to next turn. A question is not selected.')
+            if (i < 0) abort(500, 'Failed to next turn. A question is not selected.')
 
-        this.questions[i].isUsed = true;
+            this.questions[i].isUsed = true;
+        }
+
+        return true;
     }
 
     view(uuid) {
@@ -191,6 +195,11 @@ export class Game {
             return true;
         } else {
             this.retire(uuid);
+
+            if (this.isTurned(uuid)) {
+                this.nextTurn({ questionCheck: false })
+            }
+
             return false;
         }
     }

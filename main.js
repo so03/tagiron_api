@@ -1,12 +1,12 @@
 import express from "express";
 import http from "http";
 import cors from "cors";
+import fs from "fs";
+import path from 'path';
 import { Server } from "socket.io";
 import { Game } from "./src/game.js";
 import { FileRepository } from "./src/repositories.js";
 import { handleErrors } from "./src/middleware/handleErrors.js";
-import fs from "fs";
-import path from 'path';
 
 // セーブ場所の指定
 const repo = new FileRepository(path.resolve('./game.json'));
