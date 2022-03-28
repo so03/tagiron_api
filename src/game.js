@@ -115,19 +115,19 @@ export class Game {
         return true;
     }
 
-    nextTurn({ questionCheck = true }) {
+    nextTurn({ questionCheck = true } = {}) {
         if (this.players.every(p => p.retired)) abort(500, 'All players were already retired');
 
         while (true) {
             this.turn += 1;
             this.turn %= 4;
-            if (!this.turnedPlayer.isRetired) break;
+            if (!this.turnedPlayer().retired) break;
         }
 
         console.log("opens", this.opens())
 
         if (questionCheck) {
-            const i = this.opens().findIndex(q => q.isSelected)
+            const i = this.questions.findIndex(q => q.isSelected)
 
             if (i < 0) abort(500, 'Failed to next turn. A question is not selected.')
 
@@ -139,7 +139,7 @@ export class Game {
 
     view(uuid) {
         const me = this.findBy(uuid);
-        if (!me) abort(404, 'View is not found');
+        if (!me) abort(404, `View is not found. uuid: ${uuid}`);
         const playerList = this.players.map((p, i) => {
             return {
                 name: p.name,
@@ -151,6 +151,7 @@ export class Game {
         return {
             me,
             isTurn: this.isTurned(me.uuid),
+            turnedPlayerName: this.turnedPlayer().name,
             opens: this.opens(),
             playerList,
             questionCount,

@@ -1,7 +1,3 @@
-TODO  
-- auth route.
-- deploy auto re-build, run
-
 Cloud Server
 ```
 ssh dev-mine-ec2-user
